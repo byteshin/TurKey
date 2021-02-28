@@ -1,0 +1,4 @@
+{
+  "rust-client.engine": "rust-analyzer",
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true
+}

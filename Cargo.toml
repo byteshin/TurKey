@@ -1,0 +1,15 @@
+[package]
+name = "turkey"
+version = "0.1.0"
+authors = ["byteshin"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+error-chain ="0.12.4"
+windows = "0.3.1"
+
+[build-dependencies]
+windows = "0.3.1"
