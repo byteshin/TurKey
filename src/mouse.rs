@@ -1,4 +1,5 @@
 use crate::bindings::windows::win32::keyboard_and_mouse_input as km;
+use crate::bindings::windows::win32::windows_and_messaging as wm;
 use crate::errors::*;
 
 const BUTTON_LEFT: u8 = 1;
@@ -22,6 +23,19 @@ const MOUSEEVENTF_WHEEL: u32 = 0x0800;
 const MOUSEEVENTF_HWHEEL: u32 = 0x01000;
 const XBUTTON1: u32 = 1;
 const XBUTTON2: u32 = 2;
+
+static mut SCREEN_SIZE: (i32, i32) = (0, 0);
+static INIT: std::sync::Once = std::sync::Once::new();
+  
+fn screen_size() -> (i32, i32) {
+  unsafe {
+    INIT.call_once(|| {
+      SCREEN_SIZE.0 = wm::GetSystemMetrics(0 /* SM_CXSCREEN */);
+      SCREEN_SIZE.1 = wm::GetSystemMetrics(1 /* SM_CYSCREEN */);
+    });
+    SCREEN_SIZE
+  }
+}
 
 pub enum MouseAction {
   Move(i32, i32),
@@ -51,8 +65,9 @@ pub fn input(action: &MouseAction) -> Result<()> {
       mi.mi.dw_flags = MOUSEEVENTF_MOVE;
     }
     MouseAction::MoveTo(x, y) => {
-      mi.mi.dx = x;
-      mi.mi.dy = y;
+      let (w, h) = screen_size();
+      mi.mi.dx = (x as i64 * 65535i64 / w as i64) as _;
+      mi.mi.dy = (y as i64 * 65535i64 / h as i64) as _;
       mi.mi.dw_flags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE;
     }
     MouseAction::Click(button) => match button {
@@ -145,7 +160,8 @@ pub fn input(action: &MouseAction) -> Result<()> {
 fn test() {
   // input(&MouseAction::Click(BUTTON_RIGHT)).unwrap();
   // input(&MouseAction::Move(100, 100)).unwrap();
-  // input(&MouseAction::MoveTo(0, 0)).unwrap();
+  // println!("screen size {:?}", screen_size());
+  // input(&MouseAction::MoveTo(200,200)).unwrap();
   // input(&MouseAction::Press(BUTTON_RIGHT, false)).unwrap();
   // input(&MouseAction::Press(BUTTON_RIGHT, true)).unwrap();
   // input(&MouseAction::Wheel(100)).unwrap();

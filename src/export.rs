@@ -1,6 +1,7 @@
 use crate::hotkey;
 use crate::keyboard;
 use crate::mouse;
+use crate::window;
 use std::os::raw::*;
 
 #[no_mangle]
@@ -113,6 +114,55 @@ pub extern "C" fn hotkey_wait() -> c_int {
     Err(e) => {
       println!("{}", e.description());
       0
+    }
+  }
+}
+
+// Sleep milliseconds
+#[no_mangle]
+pub extern "C" fn sleep(ms: i32) {
+  std::thread::sleep(std::time::Duration::from_millis(ms as _));
+}
+
+#[no_mangle]
+pub extern "C" fn window_find(cls: *const c_char, caption: *const c_char) -> isize {
+  let cls_slice = unsafe { std::ffi::CStr::from_ptr(cls).to_str().unwrap() };
+  let caption_slice = unsafe { std::ffi::CStr::from_ptr(caption).to_str().unwrap() };
+  window::find(cls_slice, caption_slice)
+}
+
+#[no_mangle]
+pub extern "C" fn window_pos(hwnd: isize, x: *mut i32, y: *mut i32) -> c_int {
+  match window::get_pos(hwnd) {
+    Some((retx, rety)) => unsafe {
+      if x != std::ptr::null_mut() {
+        *x = retx;
+      }
+      if y != std::ptr::null_mut() {
+        *y = rety;
+      }
+      return 0;
+    }
+    None => {
+      return 1;
+    }
+  }
+}
+
+#[no_mangle]
+pub extern "C" fn window_size(hwnd: isize, x: *mut i32, y: *mut i32) -> c_int {
+  match window::get_size(hwnd) {
+    Some((retx, rety)) => unsafe {
+      if x != std::ptr::null_mut() {
+        *x = retx;
+      }
+      if y != std::ptr::null_mut() {
+        *y = rety;
+      }
+      return 0;
+    }
+    None => {
+      return 1;
     }
   }
 }

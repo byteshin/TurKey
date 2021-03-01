@@ -10,6 +10,7 @@ crate-type = ["cdylib"]
 [dependencies]
 error-chain ="0.12.4"
 windows = "0.3.1"
+lazy_static = "1.4.0"
 
 [build-dependencies]
 windows = "0.3.1"
