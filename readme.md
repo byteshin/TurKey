@@ -19,12 +19,36 @@ class Turkey:
         self.dll = ctypes.cdll.LoadLibrary(path)
     
     def kb_input(self, s : str) -> int:
+        """
+        # Input key arrays
+        tk.kb_input("abcd1234!@#$")
+
+        # Input combination keys
+        # Show desktop shortcut Windows + d
+        tk.kb_input("<win+d>")
+
+        # Input key pressed down '+' or up '-'
+        # Input "ABC" when caps-lock is off
+        tk.kb_input("<shift+>abc<shift->")
+
+        # Input key pressed using '+' or '-'
+        # Input "ABC" when caps-lock is off
+        tk.kb_input("<shift+>abc<shift->")
+
+        # Some keys must escaped
+        # Input "<>"
+        tk.kb_input("<lt><gt>")
+
+        More details of key name please see [key.md](dos/key.md).
+        """
         return self.dll.kb_input(s.encode())
     
     def move(self, x : int, y : int) -> int:
+        """Move mouse relatively"""
         return self.dll.move(x, y)
     
     def move_to(self, x : int, y : int) -> int:
+        """Move mouse to a given position"""
         return self.dll.move_to(x, y)
     
     button_left = 1
@@ -33,15 +57,20 @@ class Turkey:
     button_x1 = 4
     button_x2 = 5
     def click(self, button : int) -> int:
+        """Click(press down and up) mouse button"""
         return self.dll.click(button)
 
     def press(self, button : int, up : bool) -> int:
+        """Press down or up mouse button"""
         return self.dll.press(button, 1 if up else 0)
     
     def wheel(self, amount : int) -> int:
+        """mouse wheel"""
         return self.dll.wheel(amount)
     
     def hwheel(self, amount : int) -> int:
+        """mouse horizontal wheel"""
+        return self.dll.wheel(amount)
         return self.dll.hwheel(amount)
     
     def hotkey_register(self, hotkey : str) -> int:
@@ -96,4 +125,4 @@ tk = Turkey("path/to/turkey.dll")
 
 - Install rust
 - Clone or download repo
-- cargo build
+- Run `cargo build`
