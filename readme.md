@@ -11,7 +11,7 @@ It's better use with python.
 - Download release dll
 - Use with following python3 code.
 
-```
+```python
 import ctypes
 class Turkey:
     def __init__(self, path):
