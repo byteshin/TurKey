@@ -142,7 +142,7 @@ pub extern "C" fn window_pos(hwnd: isize, x: *mut i32, y: *mut i32) -> c_int {
         *y = rety;
       }
       return 0;
-    }
+    },
     None => {
       return 1;
     }
@@ -160,7 +160,7 @@ pub extern "C" fn window_size(hwnd: isize, x: *mut i32, y: *mut i32) -> c_int {
         *y = rety;
       }
       return 0;
-    }
+    },
     None => {
       return 1;
     }

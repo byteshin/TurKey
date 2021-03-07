@@ -26,7 +26,7 @@ const XBUTTON2: u32 = 2;
 
 static mut SCREEN_SIZE: (i32, i32) = (0, 0);
 static INIT: std::sync::Once = std::sync::Once::new();
-  
+
 fn screen_size() -> (i32, i32) {
   unsafe {
     INIT.call_once(|| {
