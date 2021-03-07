@@ -8,8 +8,8 @@ A keyboard and mouse automation dll for Windows.
 
 It's better use with python.
 
-#. Download release dll
-#. Use with following python3 code.
+- Download release dll
+- Use with following python3 code.
 
 ```
 import ctypes
@@ -94,6 +94,6 @@ tk = Turkey("path/to/turkey.dll")
 
 ## How to build?
 
-#. Install rust
-#. Clone or download repo
-#. cargo build
+- Install rust
+- Clone or download repo
+- cargo build
